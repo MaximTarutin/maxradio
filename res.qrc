@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>res/radio-color.png</file>
+        <file>res/radio-gray.png</file>
+        <file>res/play.png</file>
+        <file>res/stop.png</file>
+        <file>res/prosrach.png</file>
+    </qresource>
+</RCC>

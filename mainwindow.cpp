@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget *parent)
     FLAG_SHOW = false;
     screen = QApplication::screens().at(0);
     QSize size = screen->availableSize();
-    size_w = size.width();                                      // Ширина экрана
+    size_w = size.width();                                      // Ширина экрана !!!!!!!!!
     size_h = size.height();                                     // Высота экрана
 
     QSqlQuery query;

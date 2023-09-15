@@ -10,6 +10,7 @@ PlaylistRadio::PlaylistRadio(QWidget *parent) :
     this->setWindowFlag(Qt::Tool);
     this->setWindowFlag(Qt::FramelessWindowHint);
     this->setWindowFlag(Qt::Popup);
+    this->setFocusPolicy(Qt::ClickFocus);
     QSqlQuery query;
 
 }

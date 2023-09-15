@@ -18,6 +18,7 @@ public:
 
 private:
     Ui::PlaylistRadio *ui;
+
 };
 
 #endif // PLAYLISTRADIO_H

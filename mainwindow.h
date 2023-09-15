@@ -42,6 +42,9 @@ private slots:
     void editor();                                              // Редактор радиостанций
     void show_list_radio(QSystemTrayIcon::ActivationReason);    // Показать список радиостанций
     void play_radio();                                          // Запуск выбранной радиостанции
+    void init();                                                // Инициализация
+    void init_size();                                           // Инициализация переменных size_w, size_h
+    void init_playlist();                                       // Инициализация плейлиста
 
 };
 

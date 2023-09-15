@@ -7,15 +7,67 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
-    createConnect();
     FLAG_SHOW = false;
+    trayIcon =          new QSystemTrayIcon(this);
+    menu =              new QMenu(this);
+    exit_of_programm =  new QAction("Выход", this);
+    editor_radio =      new QAction("Редактор радиостанций", this);
+    mplayer =           new QMediaPlayer();
+    audioOutput =       new QAudioOutput();
+    playlist_radio =    new PlaylistRadio();
+
+    createConnect();
+    init();
+    init_size();
+    init_playlist();
+
+    connect(exit_of_programm,   &QAction::triggered,            this,   &MainWindow::close_programm);
+    connect(editor_radio,       &QAction::triggered,            this,   &MainWindow::editor);
+    connect(trayIcon,           &QSystemTrayIcon::activated,    this,   &MainWindow::show_list_radio);
+}
+
+MainWindow::~MainWindow()
+{
+    delete trayIcon;
+    delete menu;
+    delete exit_of_programm;
+    delete editor_radio;
+    delete mplayer;
+    delete audioOutput;
+    delete playlist_radio;
+    close_db();
+}
+
+// ----------------------------- Инициализация -----------------------------------
+
+void MainWindow::init()
+{
+    QIcon trayImage(":/res/radio-color.png");                   // Приложение запускаем в трее
+    trayIcon->setIcon(trayImage);
+    trayIcon->show();
+    menu->addAction(editor_radio);                              // Формируем меню приложения
+    menu->addSeparator();
+    menu->addAction(exit_of_programm);
+    trayIcon->setContextMenu(menu);
+}
+
+// ----------------------------- Инициализация переменных size_w, size_h -----------------------------
+
+void MainWindow::init_size()
+{
     screen = QApplication::screens().at(0);
     QSize size = screen->availableSize();
     size_w = size.width();                                      // Ширина экрана !!!!!!!!!
-    size_h = size.height();                                     // Высота экрана
+    size_h = size.height();
+}
 
+// ---------------------------- Инициализация плейлиста --------------------------------------
+
+void MainWindow::init_playlist()
+{
     QSqlQuery query;
     QString   name;
+
     query.exec("CREATE TABLE maxradio_table ("
                "groups STRING, name STRING, url STRING, UNIQUE(url));");
 
@@ -29,53 +81,19 @@ MainWindow::MainWindow(QWidget *parent)
                "VALUES ('Поп', 'NRJ',"
                "'http://185.52.127.168/fr/30001/mp3_128.mp3?origine=fluxradios?1535727639539.mp3&access_token=bccc39f27055469799ec9f2f48d34f12')");
 
-    trayIcon =          new QSystemTrayIcon(this);
-    menu =              new QMenu(this);
-    exit_of_programm =  new QAction("Выход", this);
-    editor_radio =      new QAction("Редактор радиостанций", this);
-    mplayer =           new QMediaPlayer();
-    audioOutput =       new QAudioOutput();
-    playlist_radio =    new PlaylistRadio();
-
     //-----------------playlist_radio->show();
 
     //list_radio->setWindowFlag(Qt::FramelessWindowHint);
     //mplayer->setAudioOutput(audioOutput);
     //audioOutput->setVolume(50);
 
-//    query.exec("SELECT name FROM maxradio_table");
-//    QSqlRecord rec = query.record();
-//    while (query.next())
-//    {
-//        name = query.value(rec.indexOf("name")).toString();      // Заполняем combobox
-//        list_radio->addItem(name);
-//    }
-
-    QIcon trayImage(":/res/radio-color.png");                   // Приложение запускаем в трее
-    trayIcon->setIcon(trayImage);
-    trayIcon->show();
-
-    menu->addAction(editor_radio);                              // Формируем меню приложения
-    menu->addSeparator();
-    menu->addAction(exit_of_programm);
-    trayIcon->setContextMenu(menu);
-
-    connect(exit_of_programm,   &QAction::triggered,            this,   &MainWindow::close_programm);
-    connect(editor_radio,       &QAction::triggered,            this,   &MainWindow::editor);
-    connect(trayIcon,           &QSystemTrayIcon::activated,    this,   &MainWindow::show_list_radio);
-}
-
-MainWindow::~MainWindow()
-{
-    delete trayIcon;
-    delete menu;
-    delete exit_of_programm;
-    delete editor_radio;
-    //delete list_radio;
-    delete mplayer;
-    delete audioOutput;
-    delete playlist_radio;
-    close_db();
+    //    query.exec("SELECT name FROM maxradio_table");
+    //    QSqlRecord rec = query.record();
+    //    while (query.next())
+    //    {
+    //        name = query.value(rec.indexOf("name")).toString();      // Заполняем combobox
+    //        list_radio->addItem(name);
+    //    }
 }
 
 // ----------------------------- Редактор радиостанций ---------------------------------

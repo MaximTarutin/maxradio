@@ -24,7 +24,10 @@ private:
     QAudioOutput        *audioOutput;
 
     void init();
-    void play_radio();
+    void play_radio(QString radio);
+
+private slots:
+    void get_title();
 
 };
 

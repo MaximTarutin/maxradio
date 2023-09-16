@@ -1,6 +1,7 @@
 #include "playlistradio.h"
 #include "ui_playlistradio.h"
 #include <QSqlQuery>
+#include <QMediaMetaData>
 
 PlaylistRadio::PlaylistRadio(QWidget *parent) :
     QWidget(parent),
@@ -15,7 +16,30 @@ PlaylistRadio::PlaylistRadio(QWidget *parent) :
 
     init();
 
-    //connect(this->ui->comboBox_rok,     &QComboBox::currentTextChanged,     this,   &PlaylistRadio::play_radio);
+    connect(this->ui->comboBox_rok,     &QComboBox::currentTextChanged, [this](){play_radio("rok");});
+    connect(this->ui->comboBox_pop,     &QComboBox::currentTextChanged, [this](){play_radio("pop");});
+    connect(this->ui->comboBox_shanson, &QComboBox::currentTextChanged, [this](){play_radio("shanson");});
+    connect(this->ui->comboBox_dance,   &QComboBox::currentTextChanged, [this](){play_radio("dance");});
+    connect(this->ui->comboBox_hiphop,  &QComboBox::currentTextChanged, [this](){play_radio("hiphop");});
+    connect(this->ui->comboBox_news,    &QComboBox::currentTextChanged, [this](){play_radio("news");});
+    connect(this->ui->comboBox_humor,   &QComboBox::currentTextChanged, [this](){play_radio("humor");});
+    connect(this->ui->comboBox_kind,    &QComboBox::currentTextChanged, [this](){play_radio("kind");});
+    connect(this->ui->comboBox_classic, &QComboBox::currentTextChanged, [this](){play_radio("classic");});
+    connect(this->ui->comboBox_other,   &QComboBox::currentTextChanged, [this](){play_radio("other");});
+
+    //connect(mplayer,    &QMediaPlayer::mediaStatusChanged,  this,   &PlaylistRadio::get_title);
+    connect(mplayer, &QMediaPlayer::mediaStatusChanged, [this](QMediaPlayer::MediaStatus status)
+    {
+        if (status == QMediaPlayer::LoadedMedia)
+        {
+            //ui->radio_label->setText(mplayer->metaData().stringValue(QMediaMetaData::Title));
+            QVariant vr;
+            vr=mplayer->metaData().stringValue(QMediaMetaData::Title);
+            ui->radio_label->setText(vr.toString());
+            ui->radio_label->setText("kkk")
+        }
+    });
+
 }
 
 PlaylistRadio::~PlaylistRadio()
@@ -57,18 +81,77 @@ void PlaylistRadio::init()
 
 // --------------------------------- проигрывание радио -----------------------------------------
 
-void PlaylistRadio::play_radio()
+void PlaylistRadio::play_radio(QString radio)
 {
     QString name, url;
     QSqlQuery query;
 
-    //name = list_radio->currentText();
+    if (radio=="rok")
+    {
+        name = this->ui->comboBox_rok->currentText();
+        this->ui->comboBox_rok->setCurrentIndex(0);
+    }
+    if (radio=="pop")
+    {
+        name = this->ui->comboBox_pop->currentText();
+        this->ui->comboBox_pop->setCurrentIndex(0);
+    }
+    if (radio=="shanson")
+    {
+        name = this->ui->comboBox_shanson->currentText();
+        this->ui->comboBox_shanson->setCurrentIndex(0);
+    }
+    if (radio=="dance")
+    {
+        name = this->ui->comboBox_dance->currentText();
+        this->ui->comboBox_dance->setCurrentIndex(0);
+    }
+    if (radio=="hiphop")
+    {
+        name = this->ui->comboBox_hiphop->currentText();
+        this->ui->comboBox_hiphop->setCurrentIndex(0);
+    }
+    if (radio=="news")
+    {
+        name = this->ui->comboBox_news->currentText();
+        this->ui->comboBox_news->setCurrentIndex(0);
+    }
+    if (radio=="humor")
+    {
+        name = this->ui->comboBox_humor->currentText();
+        this->ui->comboBox_humor->setCurrentIndex(0);
+    }
+    if (radio=="kind")
+    {
+        name = this->ui->comboBox_kind->currentText();
+        this->ui->comboBox_kind->setCurrentIndex(0);
+    }
+    if (radio=="classic")
+    {
+        name = this->ui->comboBox_classic->currentText();
+        this->ui->comboBox_classic->setCurrentIndex(0);
+    }
+    if (radio=="other")
+    {
+        name = this->ui->comboBox_other->currentText();
+        this->ui->comboBox_other->setCurrentIndex(0);
+    }
+
+    //this->ui->radio_label->setText(name);
+
     query.exec("SELECT url FROM maxradio_table WHERE name = '"+name+"'");
     query.next();
     url = query.value("url").toString();
-    //list_radio->hide();
     mplayer->setSource(QUrl(url));
     mplayer->play();
+}
+
+void PlaylistRadio::get_title()
+{
+    QString metadata;
+    //metadata = mplayer->metaData().stringValue(QMediaMetaData::Title);
+    //metadata = mplayer->metaData().value(QMediaMetaData::Title).toString();
+   // this->ui->radio_label->setText(metadata);
 }
 
 

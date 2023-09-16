@@ -222,7 +222,7 @@ border-image: url(:/res/stop.png);</string>
      <item row="1" column="0">
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
-        <widget class="QComboBox" name="comboBox">
+        <widget class="QComboBox" name="comboBox_rok">
          <item>
           <property name="text">
            <string>Рок</string>
@@ -231,7 +231,7 @@ border-image: url(:/res/stop.png);</string>
         </widget>
        </item>
        <item>
-        <widget class="QComboBox" name="comboBox_2">
+        <widget class="QComboBox" name="comboBox_pop">
          <item>
           <property name="text">
            <string>Поп</string>
@@ -240,7 +240,7 @@ border-image: url(:/res/stop.png);</string>
         </widget>
        </item>
        <item>
-        <widget class="QComboBox" name="comboBox_3">
+        <widget class="QComboBox" name="comboBox_shanson">
          <item>
           <property name="text">
            <string>Шансон</string>
@@ -249,7 +249,7 @@ border-image: url(:/res/stop.png);</string>
         </widget>
        </item>
        <item>
-        <widget class="QComboBox" name="comboBox_5">
+        <widget class="QComboBox" name="comboBox_dance">
          <item>
           <property name="text">
            <string>Танцевальная</string>
@@ -258,7 +258,7 @@ border-image: url(:/res/stop.png);</string>
         </widget>
        </item>
        <item>
-        <widget class="QComboBox" name="comboBox_11">
+        <widget class="QComboBox" name="comboBox_hiphop">
          <item>
           <property name="text">
            <string>Реп, хип-хоп</string>
@@ -267,7 +267,7 @@ border-image: url(:/res/stop.png);</string>
         </widget>
        </item>
        <item>
-        <widget class="QComboBox" name="comboBox_6">
+        <widget class="QComboBox" name="comboBox_news">
          <item>
           <property name="text">
            <string>Новости</string>
@@ -276,7 +276,7 @@ border-image: url(:/res/stop.png);</string>
         </widget>
        </item>
        <item>
-        <widget class="QComboBox" name="comboBox_7">
+        <widget class="QComboBox" name="comboBox_humor">
          <item>
           <property name="text">
            <string>Юмор</string>
@@ -285,7 +285,7 @@ border-image: url(:/res/stop.png);</string>
         </widget>
        </item>
        <item>
-        <widget class="QComboBox" name="comboBox_8">
+        <widget class="QComboBox" name="comboBox_kind">
          <item>
           <property name="text">
            <string>Детское</string>
@@ -294,7 +294,7 @@ border-image: url(:/res/stop.png);</string>
         </widget>
        </item>
        <item>
-        <widget class="QComboBox" name="comboBox_9">
+        <widget class="QComboBox" name="comboBox_classic">
          <item>
           <property name="text">
            <string>Классика</string>
@@ -303,7 +303,7 @@ border-image: url(:/res/stop.png);</string>
         </widget>
        </item>
        <item>
-        <widget class="QComboBox" name="comboBox_10">
+        <widget class="QComboBox" name="comboBox_other">
          <item>
           <property name="text">
            <string>Другое</string>

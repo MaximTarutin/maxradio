@@ -6,9 +6,7 @@
 #include <QIcon>
 #include <QMenu>
 #include <QAction>
-#include <QMediaPlayer>
-#include <QAudioOutput>
-#include <QBuffer>
+//#include <QBuffer>
 #include <QUrl>
 #include <QScreen>
 #include <QSize>
@@ -28,9 +26,7 @@ private:
     QMenu               *menu;
     QAction             *exit_of_programm;
     QAction             *editor_radio;
-    QMediaPlayer        *mplayer;
-    QBuffer             *buffer;
-    QAudioOutput        *audioOutput;
+//    QBuffer             *buffer;
     PlaylistRadio       *playlist_radio;
     QScreen             *screen;
     int                 size_w;

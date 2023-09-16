@@ -2,7 +2,8 @@
 #define PLAYLISTRADIO_H
 
 #include <QWidget>
-#include <QSqlQuery>
+#include <QMediaPlayer>
+#include <QAudioOutput>
 
 namespace Ui {
 class PlaylistRadio;
@@ -18,6 +19,12 @@ public:
 
 private:
     Ui::PlaylistRadio *ui;
+
+    QMediaPlayer        *mplayer;
+    QAudioOutput        *audioOutput;
+
+    void init();
+    void play_radio();
 
 };
 

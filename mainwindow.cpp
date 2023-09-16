@@ -7,23 +7,21 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
+    createConnect();
     FLAG_SHOW = false;
     trayIcon =          new QSystemTrayIcon(this);
     menu =              new QMenu(this);
     exit_of_programm =  new QAction("Выход", this);
     editor_radio =      new QAction("Редактор радиостанций", this);
-    mplayer =           new QMediaPlayer();
-    audioOutput =       new QAudioOutput();
     playlist_radio =    new PlaylistRadio();
 
-    createConnect();
-    init();
-    init_size();
-    init_playlist();
+    init();                         // инициируем программу (значок в трее и меню)
+    init_size();                    // инициируем переменные ширины и высоты экрана
+    init_playlist();                // инициируем плейлист
 
-    connect(exit_of_programm,   &QAction::triggered,            this,   &MainWindow::close_programm);
-    connect(editor_radio,       &QAction::triggered,            this,   &MainWindow::editor);
-    connect(trayIcon,           &QSystemTrayIcon::activated,    this,   &MainWindow::show_list_radio);
+    connect(exit_of_programm,   &QAction::triggered,            this,   &MainWindow::close_programm);       // выход из программы
+    connect(editor_radio,       &QAction::triggered,            this,   &MainWindow::editor);               // редактор плейлиста
+    connect(trayIcon,           &QSystemTrayIcon::activated,    this,   &MainWindow::show_list_radio);      // клик по иконке
 }
 
 MainWindow::~MainWindow()
@@ -32,10 +30,7 @@ MainWindow::~MainWindow()
     delete menu;
     delete exit_of_programm;
     delete editor_radio;
-    delete mplayer;
-    delete audioOutput;
     delete playlist_radio;
-    close_db();
 }
 
 // ----------------------------- Инициализация -----------------------------------
@@ -80,20 +75,6 @@ void MainWindow::init_playlist()
     query.exec("INSERT INTO maxradio_table (groups, name, url) "
                "VALUES ('Поп', 'NRJ',"
                "'http://185.52.127.168/fr/30001/mp3_128.mp3?origine=fluxradios?1535727639539.mp3&access_token=bccc39f27055469799ec9f2f48d34f12')");
-
-    //-----------------playlist_radio->show();
-
-    //list_radio->setWindowFlag(Qt::FramelessWindowHint);
-    //mplayer->setAudioOutput(audioOutput);
-    //audioOutput->setVolume(50);
-
-    //    query.exec("SELECT name FROM maxradio_table");
-    //    QSqlRecord rec = query.record();
-    //    while (query.next())
-    //    {
-    //        name = query.value(rec.indexOf("name")).toString();      // Заполняем combobox
-    //        list_radio->addItem(name);
-    //    }
 }
 
 // ----------------------------- Редактор радиостанций ---------------------------------
@@ -123,8 +104,6 @@ void MainWindow::show_list_radio(QSystemTrayIcon::ActivationReason r)
                 playlist_radio->move(x_cur-playlist_radio->width()/2, y_cur-playlist_radio->height()-40);
             }
             playlist_radio->show();
-
-        //connect(list_radio,     &QComboBox::currentTextChanged,     this,   &MainWindow::play_radio);
         }
         FLAG_SHOW = true;
         return;
@@ -140,17 +119,7 @@ void MainWindow::show_list_radio(QSystemTrayIcon::ActivationReason r)
 
 void MainWindow::play_radio()
 {
-    QString name, url;
-    QSqlQuery query;
 
-    //name = list_radio->currentText();
-    query.exec("SELECT url FROM maxradio_table WHERE name = '"+name+"'");
-    QSqlRecord rec = query.record();
-    query.next();
-    url = query.value(rec.indexOf("url")).toString();
-    //list_radio->hide();
-    mplayer->setSource(QUrl(url));
-    mplayer->play();
 
 }
 

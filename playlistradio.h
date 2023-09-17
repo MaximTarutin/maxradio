@@ -23,12 +23,9 @@ private:
     QMediaPlayer        *mplayer;
     QAudioOutput        *audioOutput;
 
+public:
     void init();
     void play_radio(QString radio);
-
-private slots:
-    void get_title();
-
 };
 
 #endif // PLAYLISTRADIO_H

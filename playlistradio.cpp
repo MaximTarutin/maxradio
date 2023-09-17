@@ -9,12 +9,15 @@ PlaylistRadio::PlaylistRadio(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    mplayer =           new QMediaPlayer();
+    audioOutput =       new QAudioOutput();
+    mplayer->setAudioOutput(audioOutput);
+    audioOutput->setVolume(50);
+
     this->setWindowFlag(Qt::Tool);
     this->setWindowFlag(Qt::FramelessWindowHint);
     this->setWindowFlag(Qt::Popup);
     this->setFocusPolicy(Qt::ClickFocus);
-
-    init();
 
     connect(this->ui->comboBox_rok,     &QComboBox::currentTextChanged, [this](){play_radio("rok");});
     connect(this->ui->comboBox_pop,     &QComboBox::currentTextChanged, [this](){play_radio("pop");});
@@ -27,16 +30,14 @@ PlaylistRadio::PlaylistRadio(QWidget *parent) :
     connect(this->ui->comboBox_classic, &QComboBox::currentTextChanged, [this](){play_radio("classic");});
     connect(this->ui->comboBox_other,   &QComboBox::currentTextChanged, [this](){play_radio("other");});
 
-    //connect(mplayer,    &QMediaPlayer::mediaStatusChanged,  this,   &PlaylistRadio::get_title);
     connect(mplayer, &QMediaPlayer::mediaStatusChanged, [this](QMediaPlayer::MediaStatus status)
     {
         if (status == QMediaPlayer::LoadedMedia)
         {
-            //ui->radio_label->setText(mplayer->metaData().stringValue(QMediaMetaData::Title));
             QVariant vr;
-            vr=mplayer->metaData().stringValue(QMediaMetaData::Title);
+            vr=mplayer->metaData().value(QMediaMetaData::Title);
             ui->radio_label->setText(vr.toString());
-            ui->radio_label->setText("kkk")
+            qDebug() << QList(mplayer->metaData().keys());
         }
     });
 
@@ -72,11 +73,6 @@ void PlaylistRadio::init()
         if (groups=="Классика") this->ui->comboBox_classic->addItem(name);
         if (groups=="Другое") this->ui->comboBox_other->addItem(name);
     }
-
-    mplayer =           new QMediaPlayer();
-    audioOutput =       new QAudioOutput();
-    mplayer->setAudioOutput(audioOutput);
-    audioOutput->setVolume(50);
 }
 
 // --------------------------------- проигрывание радио -----------------------------------------
@@ -137,21 +133,13 @@ void PlaylistRadio::play_radio(QString radio)
         this->ui->comboBox_other->setCurrentIndex(0);
     }
 
-    //this->ui->radio_label->setText(name);
+    this->ui->radio_label->setText(name);
 
     query.exec("SELECT url FROM maxradio_table WHERE name = '"+name+"'");
     query.next();
     url = query.value("url").toString();
     mplayer->setSource(QUrl(url));
     mplayer->play();
-}
-
-void PlaylistRadio::get_title()
-{
-    QString metadata;
-    //metadata = mplayer->metaData().stringValue(QMediaMetaData::Title);
-    //metadata = mplayer->metaData().value(QMediaMetaData::Title).toString();
-   // this->ui->radio_label->setText(metadata);
 }
 
 

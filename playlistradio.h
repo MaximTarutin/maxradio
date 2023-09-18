@@ -23,6 +23,10 @@ private:
     QMediaPlayer        *mplayer;
     QAudioOutput        *audioOutput;
 
+private slots:
+    void play_button();
+    void stop_button();
+
 public:
     void init();
     void play_radio(QString radio);

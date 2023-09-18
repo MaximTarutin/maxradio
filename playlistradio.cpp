@@ -18,6 +18,7 @@ PlaylistRadio::PlaylistRadio(QWidget *parent) :
     this->setWindowFlag(Qt::FramelessWindowHint);
     this->setWindowFlag(Qt::Popup);
     this->setFocusPolicy(Qt::ClickFocus);
+    //this->setAttribute(Qt::WA_TranslucentBackground);                       // делаем окно прозрачным
 
     connect(this->ui->comboBox_rok,     &QComboBox::currentTextChanged, [this](){play_radio("rok");});
     connect(this->ui->comboBox_pop,     &QComboBox::currentTextChanged, [this](){play_radio("pop");});
@@ -29,6 +30,9 @@ PlaylistRadio::PlaylistRadio(QWidget *parent) :
     connect(this->ui->comboBox_kind,    &QComboBox::currentTextChanged, [this](){play_radio("kind");});
     connect(this->ui->comboBox_classic, &QComboBox::currentTextChanged, [this](){play_radio("classic");});
     connect(this->ui->comboBox_other,   &QComboBox::currentTextChanged, [this](){play_radio("other");});
+
+    connect(this->ui->Button_play,      &QPushButton::clicked,  this,   &PlaylistRadio::play_button);
+    connect(this->ui->Button_stop,      &QPushButton::clicked,  this,   &PlaylistRadio::stop_button);
 
     connect(mplayer, &QMediaPlayer::mediaStatusChanged, [this](QMediaPlayer::MediaStatus status)
     {
@@ -140,6 +144,20 @@ void PlaylistRadio::play_radio(QString radio)
     url = query.value("url").toString();
     mplayer->setSource(QUrl(url));
     mplayer->play();
+}
+
+// ------------------------------ кнопка play ------------------------------------
+
+void PlaylistRadio::play_button()
+{
+    mplayer->play();
+}
+
+// ------------------------------ кнопка stop ------------------------------------
+
+void PlaylistRadio::stop_button()
+{
+    mplayer->stop();
 }
 
 

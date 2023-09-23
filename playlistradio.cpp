@@ -11,6 +11,13 @@ PlaylistRadio::PlaylistRadio(QWidget *parent) :
 
     mplayer =           new QMediaPlayer();
     audioOutput =       new QAudioOutput();
+    background =        new QLabel(this);
+
+    background->resize(this->width(), this->height());
+    background->lower();
+    background->setStyleSheet("background-color: rgba(255, 255, 255, 0); border-image: url(:/res/ramka.png);");
+
+
     mplayer->setAudioOutput(audioOutput);
     audioOutput->setVolume(50);
 
@@ -18,7 +25,12 @@ PlaylistRadio::PlaylistRadio(QWidget *parent) :
     this->setWindowFlag(Qt::FramelessWindowHint);
     this->setWindowFlag(Qt::Popup);
     this->setFocusPolicy(Qt::ClickFocus);
-    //this->setAttribute(Qt::WA_TranslucentBackground);                       // делаем окно прозрачным
+    this->setAttribute(Qt::WA_TranslucentBackground);                       // делаем окно прозрачным
+
+    this->ui->Button_play->setStyleSheet("background-color: rgba(255, 255, 255, 0); "
+                                         "border-image: url(:/res/play.png);");
+    this->ui->Button_stop->setStyleSheet("background-color: rgba(255, 255, 255, 0); "
+                                         "border-image: url(:/res/stop-d.png);");
 
     connect(this->ui->comboBox_rok,     &QComboBox::currentTextChanged, [this](){play_radio("rok");});
     connect(this->ui->comboBox_pop,     &QComboBox::currentTextChanged, [this](){play_radio("pop");});
@@ -151,6 +163,8 @@ void PlaylistRadio::play_radio(QString radio)
 void PlaylistRadio::play_button()
 {
     mplayer->play();
+    this->ui->Button_play->setStyleSheet("background-color: rgba(255, 255, 255, 0); border-image: url(:/res/play-d.png);");
+    this->ui->Button_stop->setStyleSheet("background-color: rgba(255, 255, 255, 0); border-image: url(:/res/stop.png);");
 }
 
 // ------------------------------ кнопка stop ------------------------------------
@@ -158,6 +172,8 @@ void PlaylistRadio::play_button()
 void PlaylistRadio::stop_button()
 {
     mplayer->stop();
+    this->ui->Button_play->setStyleSheet("background-color: rgba(255, 255, 255, 0); border-image: url(:/res/play.png);");
+    this->ui->Button_stop->setStyleSheet("background-color: rgba(255, 255, 255, 0); border-image: url(:/res/stop-d.png);");
 }
 
 

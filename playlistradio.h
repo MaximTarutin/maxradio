@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QMediaPlayer>
 #include <QAudioOutput>
+#include <QLabel>
 
 namespace Ui {
 class PlaylistRadio;
@@ -22,6 +23,7 @@ private:
 
     QMediaPlayer        *mplayer;
     QAudioOutput        *audioOutput;
+    QLabel              *background;
 
 private slots:
     void play_button();

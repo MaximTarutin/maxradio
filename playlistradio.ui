@@ -77,11 +77,14 @@ font: italic 14pt &quot;Times New Roman&quot;;</string>
          </property>
          <property name="styleSheet">
           <string notr="true">background-color: rgba(255, 255, 255, 0);
-color: rgb(0, 85, 0);
+color: rgb(0, 255, 127);
 font: italic 11pt &quot;Times New Roman&quot;;</string>
          </property>
          <property name="text">
           <string/>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </item>
@@ -246,11 +249,40 @@ border-image: url(:/res/stop.png);</string>
          </property>
          <property name="styleSheet">
           <string notr="true">background-color: rgba(255, 255, 255, 0);
+selection-background-color: rgb(85, 255, 255);
+selection-color: rgb(0, 0, 127);
 background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(255, 241, 118, 177), stop:1 rgba(255, 255, 255, 255));</string>
          </property>
          <item>
           <property name="text">
            <string>Рок</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="comboBox_pop">
+         <property name="minimumSize">
+          <size>
+           <width>150</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>150</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: rgba(255, 255, 255, 0);
+selection-background-color: rgb(85, 255, 255);
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(255, 241, 118, 177), stop:1 rgba(255, 255, 255, 255));
+selection-color: rgb(0, 0, 127);</string>
+         </property>
+         <item>
+          <property name="text">
+           <string>Поп</string>
           </property>
          </item>
         </widget>
@@ -271,6 +303,8 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgb
          </property>
          <property name="styleSheet">
           <string notr="true">background-color: rgba(255, 255, 255, 0);
+selection-color: rgb(0, 0, 127);
+selection-background-color: rgb(85, 255, 255);
 background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(255, 241, 118, 177), stop:1 rgba(255, 255, 255, 255));</string>
          </property>
          <property name="frame">
@@ -299,6 +333,8 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgb
          </property>
          <property name="styleSheet">
           <string notr="true">background-color: rgba(255, 255, 255, 0);
+selection-color: rgb(0, 0, 127);
+selection-background-color: rgb(85, 255, 255);
 background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(255, 241, 118, 177), stop:1 rgba(255, 255, 255, 255));</string>
          </property>
          <property name="frame">
@@ -327,6 +363,8 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgb
          </property>
          <property name="styleSheet">
           <string notr="true">background-color: rgba(255, 255, 255, 0);
+selection-color: rgb(0, 0, 127);
+selection-background-color: rgb(85, 255, 255);
 background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(255, 241, 118, 177), stop:1 rgba(255, 255, 255, 255));</string>
          </property>
          <property name="frame">
@@ -355,6 +393,8 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgb
          </property>
          <property name="styleSheet">
           <string notr="true">background-color: rgba(255, 255, 255, 0);
+selection-color: rgb(0, 0, 127);
+selection-background-color: rgb(85, 255, 255);
 background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(255, 241, 118, 177), stop:1 rgba(255, 255, 255, 255));</string>
          </property>
          <property name="frame">
@@ -363,34 +403,6 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgb
          <item>
           <property name="text">
            <string>Детское</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item>
-        <widget class="QComboBox" name="comboBox_news">
-         <property name="minimumSize">
-          <size>
-           <width>150</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>150</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">background-color: rgba(255, 255, 255, 0);
-background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(255, 241, 118, 177), stop:1 rgba(255, 255, 255, 255));</string>
-         </property>
-         <property name="frame">
-          <bool>true</bool>
-         </property>
-         <item>
-          <property name="text">
-           <string>Новости</string>
           </property>
          </item>
         </widget>
@@ -411,6 +423,8 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgb
          </property>
          <property name="styleSheet">
           <string notr="true">background-color: rgba(255, 255, 255, 0);
+selection-color: rgb(0, 0, 127);
+selection-background-color: rgb(85, 255, 255);
 background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(255, 241, 118, 177), stop:1 rgba(255, 255, 255, 255));</string>
          </property>
          <property name="frame">
@@ -424,7 +438,7 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgb
         </widget>
        </item>
        <item>
-        <widget class="QComboBox" name="comboBox_pop">
+        <widget class="QComboBox" name="comboBox_news">
          <property name="minimumSize">
           <size>
            <width>150</width>
@@ -439,11 +453,16 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgb
          </property>
          <property name="styleSheet">
           <string notr="true">background-color: rgba(255, 255, 255, 0);
+selection-color: rgb(0, 0, 127);
+selection-background-color: rgb(85, 255, 255);
 background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(255, 241, 118, 177), stop:1 rgba(255, 255, 255, 255));</string>
+         </property>
+         <property name="frame">
+          <bool>true</bool>
          </property>
          <item>
           <property name="text">
-           <string>Поп</string>
+           <string>Новости</string>
           </property>
          </item>
         </widget>
@@ -464,6 +483,8 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgb
          </property>
          <property name="styleSheet">
           <string notr="true">background-color: rgba(255, 255, 255, 0);
+selection-color: rgb(0, 0, 127);
+selection-background-color: rgb(85, 255, 255);
 background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(255, 241, 118, 177), stop:1 rgba(255, 255, 255, 255));</string>
          </property>
          <property name="frame">
@@ -492,6 +513,8 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgb
          </property>
          <property name="styleSheet">
           <string notr="true">background-color: rgba(255, 255, 255, 0);
+selection-color: rgb(0, 0, 127);
+selection-background-color: rgb(85, 255, 255);
 background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(255, 241, 118, 177), stop:1 rgba(255, 255, 255, 255));</string>
          </property>
          <property name="frame">

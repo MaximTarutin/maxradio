@@ -46,15 +46,11 @@ PlaylistRadio::PlaylistRadio(QWidget *parent) :
     connect(this->ui->Button_play,      &QPushButton::clicked,  this,   &PlaylistRadio::play_button);
     connect(this->ui->Button_stop,      &QPushButton::clicked,  this,   &PlaylistRadio::stop_button);
 
-    connect(mplayer, &QMediaPlayer::mediaStatusChanged, [this](QMediaPlayer::MediaStatus status)
+    connect(mplayer, &QMediaPlayer::positionChanged, [this]()
     {
-        if (status == QMediaPlayer::LoadedMedia)
-        {
-            QVariant vr;
             vr=mplayer->metaData().value(QMediaMetaData::Title);
-            ui->radio_label->setText(vr.toString());
+            ui->track_label->setText(vr.toString());
             qDebug() << QList(mplayer->metaData().keys());
-        }
     });
 
 }
@@ -91,7 +87,7 @@ void PlaylistRadio::init()
     }
 }
 
-// --------------------------------- проигрывание радио -----------------------------------------
+// --------------------------------- выбор радио из списка -----------------------------------------
 
 void PlaylistRadio::play_radio(QString radio)
 {
@@ -155,7 +151,9 @@ void PlaylistRadio::play_radio(QString radio)
     query.next();
     url = query.value("url").toString();
     mplayer->setSource(QUrl(url));
-    mplayer->play();
+    query.clear();
+    play_button();
+
 }
 
 // ------------------------------ кнопка play ------------------------------------

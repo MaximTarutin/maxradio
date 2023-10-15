@@ -24,6 +24,7 @@ private:
     QMediaPlayer        *mplayer;
     QAudioOutput        *audioOutput;
     QLabel              *background;
+    QVariant            vr;
 
 private slots:
     void play_button();

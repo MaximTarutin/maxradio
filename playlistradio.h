@@ -5,6 +5,7 @@
 #include <QMediaPlayer>
 #include <QAudioOutput>
 #include <QLabel>
+#include <QTimer>
 
 namespace Ui {
 class PlaylistRadio;
@@ -24,11 +25,15 @@ private:
     QMediaPlayer        *mplayer;
     QAudioOutput        *audioOutput;
     QLabel              *background;
+    QTimer              *timer;
     QVariant            vr;
+    QString             url;
+    QLabel              *runstring;
 
 private slots:
     void play_button();
     void stop_button();
+    void run_string();
 
 public:
     void init();

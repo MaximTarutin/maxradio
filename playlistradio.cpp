@@ -12,16 +12,17 @@ PlaylistRadio::PlaylistRadio(QWidget *parent) :
     mplayer =           new QMediaPlayer();
     audioOutput =       new QAudioOutput();
     background =        new QLabel(this);
+    timer =             new QTimer;
+    runstring =         new QLabel(ui->track_label);
 
     background->resize(this->width(), this->height());
     background->lower();
     background->setStyleSheet("background-color: rgba(255, 255, 255, 0); border-image: url(:/res/ramka.png);");
-
+    ui->track_label->move(234, ui->radio_label->y()+ui->radio_label->height()+1);
 
     mplayer->setAudioOutput(audioOutput);
     audioOutput->setVolume(50);
 
-    this->setWindowFlag(Qt::Tool);
     this->setWindowFlag(Qt::FramelessWindowHint);
     this->setWindowFlag(Qt::Popup);
     this->setFocusPolicy(Qt::ClickFocus);
@@ -46,6 +47,8 @@ PlaylistRadio::PlaylistRadio(QWidget *parent) :
     connect(this->ui->Button_play,      &QPushButton::clicked,  this,   &PlaylistRadio::play_button);
     connect(this->ui->Button_stop,      &QPushButton::clicked,  this,   &PlaylistRadio::stop_button);
 
+    connect(this->timer,    &QTimer::timeout,       this,   &PlaylistRadio::run_string);
+
     connect(mplayer, &QMediaPlayer::positionChanged, [this]()
     {
             vr=mplayer->metaData().value(QMediaMetaData::Title);
@@ -60,6 +63,8 @@ PlaylistRadio::~PlaylistRadio()
     delete ui;
     delete mplayer;
     delete audioOutput;
+    delete timer;
+    delete runstring;
 }
 
 // ------------------------------------ Инициализация ---------------------------------------
@@ -91,7 +96,7 @@ void PlaylistRadio::init()
 
 void PlaylistRadio::play_radio(QString radio)
 {
-    QString name, url;
+    QString name;
     QSqlQuery query;
 
     if (radio=="rok")
@@ -160,6 +165,7 @@ void PlaylistRadio::play_radio(QString radio)
 
 void PlaylistRadio::play_button()
 {
+    timer->start(30);
     mplayer->play();
     this->ui->Button_play->setStyleSheet("background-color: rgba(255, 255, 255, 0); border-image: url(:/res/play-d.png);");
     this->ui->Button_stop->setStyleSheet("background-color: rgba(255, 255, 255, 0); border-image: url(:/res/stop.png);");
@@ -169,9 +175,19 @@ void PlaylistRadio::play_button()
 
 void PlaylistRadio::stop_button()
 {
+    timer->stop();
     mplayer->stop();
     this->ui->Button_play->setStyleSheet("background-color: rgba(255, 255, 255, 0); border-image: url(:/res/play.png);");
     this->ui->Button_stop->setStyleSheet("background-color: rgba(255, 255, 255, 0); border-image: url(:/res/stop-d.png);");
 }
 
+// ----------------------------- бегущая строка -----------------------------------
+
+void PlaylistRadio::run_string()
+{
+    static int count;
+    count--;
+    if (count <= -234) count = 234;
+    this->ui->track_label->move(count, ui->radio_label->y()+ui->radio_label->height()+1);
+}
 

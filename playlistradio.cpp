@@ -18,7 +18,9 @@ PlaylistRadio::PlaylistRadio(QWidget *parent) :
     background->resize(this->width(), this->height());
     background->lower();
     background->setStyleSheet("background-color: rgba(255, 255, 255, 0); border-image: url(:/res/ramka.png);");
-    ui->track_label->move(234, ui->radio_label->y()+ui->radio_label->height()+1);
+    runstring->move(190, 5);
+    runstring->resize(600, 30);
+    runstring->show();
 
     mplayer->setAudioOutput(audioOutput);
     audioOutput->setVolume(50);
@@ -52,8 +54,14 @@ PlaylistRadio::PlaylistRadio(QWidget *parent) :
     connect(mplayer, &QMediaPlayer::positionChanged, [this]()
     {
             vr=mplayer->metaData().value(QMediaMetaData::Title);
-            ui->track_label->setText(vr.toString());
+            //ui->track_label->setText(vr.toString());
+            //QString m = vr.toString();
+            runstring->setText(vr.toString());
+            //ui->track_label->show();
+            //runstring->setText(vr.toString());
+            //runstring->show();
             qDebug() << QList(mplayer->metaData().keys());
+            //qDebug() << m;
     });
 
 }
@@ -187,7 +195,7 @@ void PlaylistRadio::run_string()
 {
     static int count;
     count--;
-    if (count <= -234) count = 234;
-    this->ui->track_label->move(count, ui->radio_label->y()+ui->radio_label->height()+1);
+    if (count <= -190) count = 190;
+    runstring->move(count, 5);
 }
 

@@ -28,6 +28,7 @@ private:
     QTimer              *timer;             // таймер для бегущей строки
     QVariant            vr;
     QString             url;
+    QString             track;
     QLabel              *runstring;         // бегущая строка
     bool                FLAG_FIRST_START;   // программа только что запущена
 

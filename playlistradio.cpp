@@ -201,6 +201,7 @@ void PlaylistRadio::run_string()
 void PlaylistRadio::track_name()
 {
     vr=mplayer->metaData().value(QMediaMetaData::Title);
-    runstring->setText(vr.toString());
+    track = vr.toString();
+    runstring->setText(track);
 }
 

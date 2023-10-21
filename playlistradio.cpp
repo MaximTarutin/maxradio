@@ -7,6 +7,8 @@ PlaylistRadio::PlaylistRadio(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::PlaylistRadio)
 {
+    FLAG_FIRST_START = true;        // еще ничего не воспроизводилось, программу только запустили
+
     ui->setupUi(this);
 
     mplayer =           new QMediaPlayer();
@@ -20,7 +22,6 @@ PlaylistRadio::PlaylistRadio(QWidget *parent) :
     background->setStyleSheet("background-color: rgba(255, 255, 255, 0); border-image: url(:/res/ramka.png);");
     runstring->move(190, 5);
     runstring->resize(600, 30);
-    runstring->show();
 
     mplayer->setAudioOutput(audioOutput);
     audioOutput->setVolume(50);
@@ -35,34 +36,23 @@ PlaylistRadio::PlaylistRadio(QWidget *parent) :
     this->ui->Button_stop->setStyleSheet("background-color: rgba(255, 255, 255, 0); "
                                          "border-image: url(:/res/stop-d.png);");
 
-    connect(this->ui->comboBox_rok,     &QComboBox::currentTextChanged, [this](){play_radio("rok");});
-    connect(this->ui->comboBox_pop,     &QComboBox::currentTextChanged, [this](){play_radio("pop");});
-    connect(this->ui->comboBox_shanson, &QComboBox::currentTextChanged, [this](){play_radio("shanson");});
-    connect(this->ui->comboBox_dance,   &QComboBox::currentTextChanged, [this](){play_radio("dance");});
-    connect(this->ui->comboBox_hiphop,  &QComboBox::currentTextChanged, [this](){play_radio("hiphop");});
-    connect(this->ui->comboBox_news,    &QComboBox::currentTextChanged, [this](){play_radio("news");});
-    connect(this->ui->comboBox_humor,   &QComboBox::currentTextChanged, [this](){play_radio("humor");});
-    connect(this->ui->comboBox_kind,    &QComboBox::currentTextChanged, [this](){play_radio("kind");});
-    connect(this->ui->comboBox_classic, &QComboBox::currentTextChanged, [this](){play_radio("classic");});
-    connect(this->ui->comboBox_other,   &QComboBox::currentTextChanged, [this](){play_radio("other");});
+    connect(this->ui->comboBox_rok,     &QComboBox::currentTextChanged, this,   [this](){play_radio("rok");});
+    connect(this->ui->comboBox_pop,     &QComboBox::currentTextChanged, this,   [this](){play_radio("pop");});
+    connect(this->ui->comboBox_shanson, &QComboBox::currentTextChanged, this,   [this](){play_radio("shanson");});
+    connect(this->ui->comboBox_dance,   &QComboBox::currentTextChanged, this,   [this](){play_radio("dance");});
+    connect(this->ui->comboBox_hiphop,  &QComboBox::currentTextChanged, this,   [this](){play_radio("hiphop");});
+    connect(this->ui->comboBox_news,    &QComboBox::currentTextChanged, this,   [this](){play_radio("news");});
+    connect(this->ui->comboBox_humor,   &QComboBox::currentTextChanged, this,   [this](){play_radio("humor");});
+    connect(this->ui->comboBox_kind,    &QComboBox::currentTextChanged, this,   [this](){play_radio("kind");});
+    connect(this->ui->comboBox_classic, &QComboBox::currentTextChanged, this,   [this](){play_radio("classic");});
+    connect(this->ui->comboBox_other,   &QComboBox::currentTextChanged, this,   [this](){play_radio("other");});
 
     connect(this->ui->Button_play,      &QPushButton::clicked,  this,   &PlaylistRadio::play_button);
     connect(this->ui->Button_stop,      &QPushButton::clicked,  this,   &PlaylistRadio::stop_button);
 
     connect(this->timer,    &QTimer::timeout,       this,   &PlaylistRadio::run_string);
 
-    connect(mplayer, &QMediaPlayer::positionChanged, [this]()
-    {
-            vr=mplayer->metaData().value(QMediaMetaData::Title);
-            //ui->track_label->setText(vr.toString());
-            //QString m = vr.toString();
-            runstring->setText(vr.toString());
-            //ui->track_label->show();
-            //runstring->setText(vr.toString());
-            //runstring->show();
-            qDebug() << QList(mplayer->metaData().keys());
-            //qDebug() << m;
-    });
+    connect(mplayer, &QMediaPlayer::positionChanged, this,  &PlaylistRadio::track_name);
 
 }
 
@@ -73,6 +63,7 @@ PlaylistRadio::~PlaylistRadio()
     delete audioOutput;
     delete timer;
     delete runstring;
+    delete background;
 }
 
 // ------------------------------------ Инициализация ---------------------------------------
@@ -165,6 +156,7 @@ void PlaylistRadio::play_radio(QString radio)
     url = query.value("url").toString();
     mplayer->setSource(QUrl(url));
     query.clear();
+    FLAG_FIRST_START = false;
     play_button();
 
 }
@@ -173,10 +165,14 @@ void PlaylistRadio::play_radio(QString radio)
 
 void PlaylistRadio::play_button()
 {
-    timer->start(30);
-    mplayer->play();
-    this->ui->Button_play->setStyleSheet("background-color: rgba(255, 255, 255, 0); border-image: url(:/res/play-d.png);");
-    this->ui->Button_stop->setStyleSheet("background-color: rgba(255, 255, 255, 0); border-image: url(:/res/stop.png);");
+    if (!FLAG_FIRST_START)
+    {
+        timer->start(30);
+        mplayer->play();
+        this->ui->Button_play->setStyleSheet("background-color: rgba(255, 255, 255, 0); border-image: url(:/res/play-d.png);");
+        this->ui->Button_stop->setStyleSheet("background-color: rgba(255, 255, 255, 0); border-image: url(:/res/stop.png);");
+        emit play_streamer(true);
+    }
 }
 
 // ------------------------------ кнопка stop ------------------------------------
@@ -187,6 +183,7 @@ void PlaylistRadio::stop_button()
     mplayer->stop();
     this->ui->Button_play->setStyleSheet("background-color: rgba(255, 255, 255, 0); border-image: url(:/res/play.png);");
     this->ui->Button_stop->setStyleSheet("background-color: rgba(255, 255, 255, 0); border-image: url(:/res/stop-d.png);");
+    emit play_streamer(false);
 }
 
 // ----------------------------- бегущая строка -----------------------------------
@@ -197,5 +194,13 @@ void PlaylistRadio::run_string()
     count--;
     if (count <= -190) count = 190;
     runstring->move(count, 5);
+}
+
+// ------------------------- считываем название текущего трека --------------------
+
+void PlaylistRadio::track_name()
+{
+    vr=mplayer->metaData().value(QMediaMetaData::Title);
+    runstring->setText(vr.toString());
 }
 

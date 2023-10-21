@@ -21,7 +21,6 @@ int main(int argc, char *argv[])
          path = QDir::homePath()+"/.maxradio.db";
     #endif
 
-    qDebug() << path;
     QSqlDatabase maxradio_db = QSqlDatabase::addDatabase("QSQLITE");
     maxradio_db.setDatabaseName(path);
     maxradio_db.open();

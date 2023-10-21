@@ -24,20 +24,25 @@ private:
 
     QMediaPlayer        *mplayer;
     QAudioOutput        *audioOutput;
-    QLabel              *background;
-    QTimer              *timer;
+    QLabel              *background;        // фоновая картинка плейлиста
+    QTimer              *timer;             // таймер для бегущей строки
     QVariant            vr;
     QString             url;
-    QLabel              *runstring;
+    QLabel              *runstring;         // бегущая строка
+    bool                FLAG_FIRST_START;   // программа только что запущена
+
+signals:
+    void play_streamer(bool);
 
 private slots:
-    void play_button();
-    void stop_button();
-    void run_string();
+    void play_button();         // запуск радиопотока по кнопке
+    void stop_button();         // остановка радиопотока по кнопке
+    void run_string();          // бегущая строка с названием трека
+    void track_name();          // считываем название трека из потока
 
 public:
-    void init();
-    void play_radio(QString radio);
+    void init();                        // инициализация плейлиста
+    void play_radio(QString radio);     // проигрывание потока
 };
 
 #endif // PLAYLISTRADIO_H

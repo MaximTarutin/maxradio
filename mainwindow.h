@@ -28,8 +28,8 @@ private:
     QAction             *editor_radio;
     PlaylistRadio       *playlist_radio;
     QScreen             *screen;
-    int                 size_w;
-    int                 size_h;
+    int                 size_w;                                 // ширина экрана
+    int                 size_h;                                 // высота экрана
     bool                FLAG_SHOW;
 
     bool check_db_file();                                       // Проверяем существует ли база данных
@@ -41,8 +41,7 @@ private slots:
     void init();                                                // Инициализация
     void init_size();                                           // Инициализация переменных size_w, size_h
     void init_playlist();                                       // Инициализация плейлиста
-
-
+    void icon_in_tray(bool b);                                        // меняет иконку в зависимости от того проигрывается ли поток
 };
 
 #endif // MAINWINDOW_H

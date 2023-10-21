@@ -1,5 +1,4 @@
 #include "mainwindow.h"
-#include "connectbasa.h"
 #include <QSqlQuery>
 #include <QSqlRecord>
 #include <QApplication>
@@ -7,7 +6,6 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
-    //createConnect();
     FLAG_SHOW = false;
     trayIcon =          new QSystemTrayIcon(this);
     menu =              new QMenu(this);
@@ -22,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(exit_of_programm,   &QAction::triggered,            this,   &MainWindow::close_programm);       // выход из программы
     connect(editor_radio,       &QAction::triggered,            this,   &MainWindow::editor);               // редактор плейлиста
     connect(trayIcon,           &QSystemTrayIcon::activated,    this,   &MainWindow::show_list_radio);      // клик по иконке
+    connect(playlist_radio,     &PlaylistRadio::play_streamer,  this,   &MainWindow::icon_in_tray);         // цвет иконки
 }
 
 MainWindow::~MainWindow()
@@ -37,7 +36,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::init()
 {
-    QIcon trayImage(":/res/radio-color.png");                   // Приложение запускаем в трее
+    QIcon trayImage(":/res/radio-gray.png");                   // Приложение запускаем в трее
     trayIcon->setIcon(trayImage);
     trayIcon->show();
     menu->addAction(editor_radio);                              // Формируем меню приложения
@@ -170,4 +169,21 @@ bool MainWindow::check_db_file()
 void MainWindow::close_programm()
 {
     exit(0);
+}
+
+// ------------------------------ Меняем цвет иконки ----------------------------------
+
+void MainWindow::icon_in_tray(bool b)
+{
+    if (b == true)
+    {
+        QIcon trayImage(":/res/radio-color.png");                   // Приложение запускаем в трее
+        trayIcon->setIcon(trayImage);
+        trayIcon->show();
+    } else
+    {
+        QIcon trayImage(":/res/radio-gray.png");                   // Приложение запускаем в трее
+        trayIcon->setIcon(trayImage);
+        trayIcon->show();
+    }
 }

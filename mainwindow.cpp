@@ -7,7 +7,7 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
-    createConnect();
+    //createConnect();
     FLAG_SHOW = false;
     trayIcon =          new QSystemTrayIcon(this);
     menu =              new QMenu(this);

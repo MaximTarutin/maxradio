@@ -14,7 +14,6 @@ SOURCES += \
     playlistradio.cpp
 
 HEADERS += \
-    connectbasa.h \
     mainwindow.h \
     playlistradio.h
 

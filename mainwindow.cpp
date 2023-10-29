@@ -79,7 +79,7 @@ void MainWindow::init_playlist()
                    "VALUES ('Рок', 'Maximum', 'http://46.146.243.42:8000/max')");
 
         query.exec("INSERT INTO maxradio_table (groups, name, url) "
-                   "VALUES ('Поп', 'Европа плюс', 'http://ep256.hostingradio.ru:8052/europaplus256.mp3')");
+                   "VALUES ('Поп', 'Европа плюс', 'http://ep128.hostingradio.ru:8030/ep128')");
         query.exec("INSERT INTO maxradio_table (groups, name, url) "
                    "VALUES ('Поп', 'Ретро FM', 'http://retroserver.streamr.ru:8043/retro256.mp3')");
         query.exec("INSERT INTO maxradio_table (groups, name, url) "
@@ -88,6 +88,15 @@ void MainWindow::init_playlist()
                    "VALUES ('Поп', 'Маруся-FM','http://radio-holding.ru:9000/marusya_default')");
         query.exec("INSERT INTO maxradio_table (groups, name, url) "
                    "VALUES ('Поп', 'Радио Ваня','http://icecast-radiovanya.cdnvideo.ru:8000/rv_spb')");
+        query.exec("INSERT INTO maxradio_table (groups, name, url) "
+                   "VALUES ('Поп', 'Радио дача','http://listen5.vdfm.ru:8000/dacha')");
+        query.exec("INSERT INTO maxradio_table (groups, name, url) "
+                   "VALUES ('Поп', 'Hit FM','http://str.simpex.ru:8076/HIT')");
+        query.exec("INSERT INTO maxradio_table (groups, name, url) "
+                   "VALUES ('Поп', 'Пассаж','http://listen.radiopassazh.ru/mp3-128')");
+
+        //query.exec("INSERT INTO maxradio_table (groups, name, url) "
+        //          "VALUES ('Реп, хип-хоп', 'Русский реп','https://radio-stream-0.obozrevatel.com/rep128.mp3')");
 
         query.exec("INSERT INTO maxradio_table (groups, name, url) "
                    "VALUES ('Танцевальная', 'NRJ',"
@@ -95,6 +104,9 @@ void MainWindow::init_playlist()
 
         query.exec("INSERT INTO maxradio_table (groups, name, url) "
                    "VALUES ('Шансон', 'радио Шансон','http://chanson.hostingradio.ru:8041/chanson128.mp3')");
+        query.exec("INSERT INTO maxradio_table (groups, name, url) "
+                   "VALUES ('Шансон', 'За друзей','http://listen2.myradio24.com:9000/8144')");
+
 
         query.exec("INSERT INTO maxradio_table (groups, name, url) "
                    "VALUES ('Юмор', 'Comedy радио','http://pub0302.101.ru:8000/stream/reg/mp3/128/region_comedy_31')");
@@ -110,6 +122,8 @@ void MainWindow::init_playlist()
                    "VALUES ('Новости', 'Комсомольская правда','http://kraskp.ru:8000/mskregion')");
         query.exec("INSERT INTO maxradio_table (groups, name, url) "
                    "VALUES ('Новости', 'радио России','http://91.228.66.62:8000/live')");
+        query.exec("INSERT INTO maxradio_table (groups, name, url) "
+                   "VALUES ('Новости', 'Маяк','http://icecast.vgtrk.cdnvideo.ru/mayakfm_mp3_128kbps')");
 
         query.exec("INSERT INTO maxradio_table (groups, name, url)"
                    "VALUES ('Классика', 'Радио классик', 'http://jfm1.hostingradio.ru:14536/rcstream.mp3')");
@@ -118,7 +132,7 @@ void MainWindow::init_playlist()
 
         query.exec("INSERT INTO maxradio_table (groups, name, url)"
                    "VALUES ('Другое', 'TarutinRadio', "
-                   "'https://hls-01-regions.emgsound.ru/11_msk/112/playlist.m3u8?hlssid=4c837e6d78c94abda1c7b183ea3cf89f')");
+                   "'https://ep256.hostingradio.ru:8052/europaplus256.mp3')");
 
 
     }

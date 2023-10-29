@@ -10,7 +10,7 @@
 #include <QSharedMemory>
 #include <QMessageBox>
 
-Q_IMPORT_PLUGIN(QSQLiteDriverPlugin)
+//Q_IMPORT_PLUGIN(QSQLiteDriverPlugin)
 
 int main(int argc, char *argv[])
 {

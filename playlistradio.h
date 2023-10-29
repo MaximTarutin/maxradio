@@ -36,10 +36,11 @@ signals:
     void play_streamer(bool);
 
 private slots:
-    void play_button();         // запуск радиопотока по кнопке
-    void stop_button();         // остановка радиопотока по кнопке
-    void run_string();          // бегущая строка с названием трека
-    void track_name();          // считываем название трека из потока
+    void play_button();                                                 // запуск радиопотока по кнопке
+    void stop_button();                                                 // остановка радиопотока по кнопке
+    void run_string();                                                  // бегущая строка с названием трека
+    void track_name();                                                  // считываем название трека из потока
+    void onMediaStatusChanged(QMediaPlayer::MediaStatus status);        // статус потока
 
 public:
     void init();                        // инициализация плейлиста

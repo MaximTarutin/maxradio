@@ -49,11 +49,11 @@ PlaylistRadio::PlaylistRadio(QWidget *parent) :
 
     connect(this->ui->Button_play,      &QPushButton::clicked,  this,   &PlaylistRadio::play_button);
     connect(this->ui->Button_stop,      &QPushButton::clicked,  this,   &PlaylistRadio::stop_button);
+    connect(mplayer, SIGNAL(mediaStatusChanged(QMediaPlayer::MediaStatus)), this, SLOT(onMediaStatusChanged(QMediaPlayer::MediaStatus)));
 
     connect(this->timer,    &QTimer::timeout,       this,   &PlaylistRadio::run_string);
 
     connect(mplayer, &QMediaPlayer::positionChanged, this,  &PlaylistRadio::track_name);
-
 }
 
 PlaylistRadio::~PlaylistRadio()
@@ -200,8 +200,16 @@ void PlaylistRadio::run_string()
 
 void PlaylistRadio::track_name()
 {
-    vr=mplayer->metaData().value(QMediaMetaData::Title);
-    track = vr.toString();
+    track=mplayer->metaData().value(QMediaMetaData::Title).toString();
     runstring->setText(track);
 }
 
+// ----------------------- Слот статуса потока ----------------------------------
+
+void PlaylistRadio::onMediaStatusChanged(QMediaPlayer::MediaStatus status)
+{
+    if (status == QMediaPlayer::LoadedMedia)
+    track=mplayer->metaData().value(QMediaMetaData::Title).toString();
+    runstring->setText(track);
+    qDebug() << track;
+}

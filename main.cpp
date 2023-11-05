@@ -10,11 +10,13 @@
 #include <QSharedMemory>
 #include <QMessageBox>
 
-//Q_IMPORT_PLUGIN(QSQLiteDriverPlugin)
+//Q_IMPORT_PLUGIN(QSQLiteDriverPlugin)              // Для статической сборки раскоментировать
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+
+    // Проверим не запущен ли уже один экземпляр программы, и не даем запустится второй раз
 
     QSystemSemaphore semaphore("<uniq id>", 1);     // создаём семафор
     semaphore.acquire();                            // Поднимаем семафор, запрещая другим экземплярам

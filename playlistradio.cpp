@@ -3,11 +3,13 @@
 #include <QSqlQuery>
 #include <QMediaMetaData>
 
+
 PlaylistRadio::PlaylistRadio(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::PlaylistRadio)
 {
-    FLAG_FIRST_START = true;        // еще ничего не воспроизводилось, программу только запустили
+    FLAG_FIRST_START = true;                                // еще ничего не воспроизводилось,
+                                                            // программу только запустили
 
     ui->setupUi(this);
 
@@ -36,7 +38,7 @@ PlaylistRadio::PlaylistRadio(QWidget *parent) :
     this->ui->Button_stop->setStyleSheet("background-color: rgba(255, 255, 255, 0); "
                                          "border-image: url(:/res/stop-d.png);");
 
-    connect(this->ui->comboBox_rok,     &QComboBox::currentTextChanged, this,   [this](){play_radio("rok");});
+    connect(this->ui->comboBox_rok,     &QComboBox::currentTextChanged, this,   [this](){play_radio("rok");});      // Выбираем категорию радио
     connect(this->ui->comboBox_pop,     &QComboBox::currentTextChanged, this,   [this](){play_radio("pop");});
     connect(this->ui->comboBox_shanson, &QComboBox::currentTextChanged, this,   [this](){play_radio("shanson");});
     connect(this->ui->comboBox_dance,   &QComboBox::currentTextChanged, this,   [this](){play_radio("dance");});
@@ -47,12 +49,12 @@ PlaylistRadio::PlaylistRadio(QWidget *parent) :
     connect(this->ui->comboBox_classic, &QComboBox::currentTextChanged, this,   [this](){play_radio("classic");});
     connect(this->ui->comboBox_other,   &QComboBox::currentTextChanged, this,   [this](){play_radio("other");});
 
-    connect(this->ui->Button_play,      &QPushButton::clicked,  this,   &PlaylistRadio::play_button);
-    connect(this->ui->Button_stop,      &QPushButton::clicked,  this,   &PlaylistRadio::stop_button);
+    connect(this->ui->Button_play,      &QPushButton::clicked,  this,   &PlaylistRadio::play_button);       // Нажали кнопку play
+    connect(this->ui->Button_stop,      &QPushButton::clicked,  this,   &PlaylistRadio::stop_button);       // Нажали кнопку stop
+
     connect(mplayer, SIGNAL(mediaStatusChanged(QMediaPlayer::MediaStatus)), this, SLOT(onMediaStatusChanged(QMediaPlayer::MediaStatus)));
 
     connect(this->timer,    &QTimer::timeout,       this,   &PlaylistRadio::run_string);
-
     connect(mplayer, &QMediaPlayer::positionChanged, this,  &PlaylistRadio::track_name);
 }
 
@@ -155,6 +157,7 @@ void PlaylistRadio::play_radio(QString radio)
     query.next();
     url = query.value("url").toString();
     mplayer->setSource(QUrl(url));
+    qDebug() << url;
     query.clear();
     FLAG_FIRST_START = false;
     play_button();
@@ -167,7 +170,7 @@ void PlaylistRadio::play_button()
 {
     if (!FLAG_FIRST_START)
     {
-        timer->start(30);
+        timer->start(40);
         mplayer->play();
         this->ui->Button_play->setStyleSheet("background-color: rgba(255, 255, 255, 0); border-image: url(:/res/play-d.png);");
         this->ui->Button_stop->setStyleSheet("background-color: rgba(255, 255, 255, 0); border-image: url(:/res/stop.png);");
@@ -202,6 +205,7 @@ void PlaylistRadio::track_name()
 {
     track=mplayer->metaData().value(QMediaMetaData::Title).toString();
     runstring->setText(track);
+    //qDebug() << track;
 }
 
 // ----------------------- Слот статуса потока ----------------------------------
@@ -209,7 +213,9 @@ void PlaylistRadio::track_name()
 void PlaylistRadio::onMediaStatusChanged(QMediaPlayer::MediaStatus status)
 {
     if (status == QMediaPlayer::LoadedMedia)
-    track=mplayer->metaData().value(QMediaMetaData::Title).toString();
-    runstring->setText(track);
-    qDebug() << track;
+    {
+        track=mplayer->metaData().value(QMediaMetaData::Title).toString();
+        runstring->setText(track);
+        qDebug() << status;
+    }
 }

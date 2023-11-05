@@ -32,6 +32,7 @@ private:
     int                 size_h;                                 // высота экрана
     bool                FLAG_SHOW;
 
+
     bool check_db_file();                                       // Проверяем существует ли база данных
 
 private slots:

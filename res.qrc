@@ -8,5 +8,8 @@
         <file>res/ramka.png</file>
         <file>res/play-d.png</file>
         <file>res/stop-d.png</file>
+        <file>res/add.png</file>
+        <file>res/del.png</file>
+        <file>res/vborder.png</file>
     </qresource>
 </RCC>

@@ -26,6 +26,7 @@ signals:
 
 private slots:
     void return_mainwindow();                   // выйти из редактора
+    void update_del_combobox();                 // обновить список радиостанций для удаления
 
 
 public:

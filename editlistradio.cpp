@@ -16,7 +16,8 @@ EditlistRadio::EditlistRadio(QWidget *parent) :
     this->setWindowFlag(Qt::FramelessWindowHint);
     this->setAttribute(Qt::WA_TranslucentBackground);                       // делаем окно прозрачным
 
-    connect(ui->return_pushButton,      &QPushButton::clicked,      this,   &EditlistRadio::return_mainwindow);     // Кнопка назад
+    connect(ui->return_pushButton, &QPushButton::clicked,           this,   &EditlistRadio::return_mainwindow);     // Кнопка назад
+    connect(ui->Category_comboBox, &QComboBox::currentIndexChanged, this,   &EditlistRadio::update_del_combobox);   // изменяем группу
 }
 
 EditlistRadio::~EditlistRadio()
@@ -47,7 +48,34 @@ void EditlistRadio::init_editor()
     {
         groups = query.value("groups").toString();
         ui->Category_comboBox->addItem(groups);
-        qDebug() << groups;
+        //qDebug() << groups;
+    }
+
+}
+
+// ------------------------------ Обновить combobox радиостанций для удаления ------------------
+
+void EditlistRadio::update_del_combobox()
+{
+    QSqlQuery query;
+    QString groups, name;
+
+    ui->del_comboBox->clear();
+
+    groups = ui->Category_comboBox->currentText();
+
+    if(groups == "")
+    {
+        ui->del_comboBox->clear();
+        return;
+    }
+
+    query.exec("SELECT groups, name FROM maxradio_table WHERE groups = '"+groups+"';");
+    ui->del_comboBox->addItem("");
+    while (query.next())
+    {
+        name = query.value("name").toString();
+        ui->del_comboBox->addItem(name);
     }
 
 }

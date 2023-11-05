@@ -7,11 +7,14 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
     FLAG_SHOW = false;
+    FLAG_EDITOR = false;            // редактор плейлиста не запущен
+
     trayIcon =          new QSystemTrayIcon(this);
     menu =              new QMenu(this);
     exit_of_programm =  new QAction("Выход", this);
     editor_radio =      new QAction("Редактор радиостанций", this);
     playlist_radio =    new PlaylistRadio();
+    editlist_radio =    new EditlistRadio();
 
     init();                         // инициируем программу (значок в трее и меню)
     init_size();                    // инициируем переменные ширины и высоты экрана
@@ -21,6 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(editor_radio,       &QAction::triggered,            this,   &MainWindow::editor);               // редактор плейлиста
     connect(trayIcon,           &QSystemTrayIcon::activated,    this,   &MainWindow::show_list_radio);      // клик по иконке
     connect(playlist_radio,     &PlaylistRadio::play_streamer,  this,   &MainWindow::icon_in_tray);         // цвет иконки
+    connect(editlist_radio,     &EditlistRadio::editor_actived, this,   &MainWindow::change_flag_editor);   // меняем флаг на false
 }
 
 MainWindow::~MainWindow()
@@ -30,6 +34,7 @@ MainWindow::~MainWindow()
     delete exit_of_programm;
     delete editor_radio;
     delete playlist_radio;
+    delete editlist_radio;
 }
 
 // ----------------------------- Инициализация -----------------------------------
@@ -143,7 +148,12 @@ void MainWindow::init_playlist()
 
 void MainWindow::editor()
 {
-    printf("fghjk");
+    if(!FLAG_EDITOR)                // запускаем только один экземпляр редактора
+    {
+        editlist_radio->init_editor();
+        editlist_radio->show();
+        FLAG_EDITOR = true;
+    }
 }
 
 // ----------------------------- Список радиостанций ----------------------------------
@@ -213,4 +223,11 @@ void MainWindow::icon_in_tray(bool b)
         trayIcon->setIcon(trayImage);
         trayIcon->show();
     }
+}
+
+// ---------------------------- ловим сигнал от editlistradio ----------------------------
+
+void MainWindow::change_flag_editor(bool b)
+{
+    if(!b) FLAG_EDITOR = false;
 }

@@ -33,7 +33,7 @@ private:
     bool                FLAG_FIRST_START;   // программа только что запущена
 
 signals:
-    void play_streamer(bool);
+    void play_streamer(bool);               // изменяет цвет иконки, в зависимости от того играет поток или нет
 
 private slots:
     void play_button();                                                 // запуск радиопотока по кнопке

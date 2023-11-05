@@ -11,5 +11,6 @@
         <file>res/add.png</file>
         <file>res/del.png</file>
         <file>res/vborder.png</file>
+        <file>res/back.png</file>
     </qresource>
 </RCC>

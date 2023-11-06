@@ -31,5 +31,3 @@ RESOURCES += \
 FORMS += \
     editlistradio.ui \
     playlistradio.ui
-
-

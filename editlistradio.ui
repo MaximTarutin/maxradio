@@ -494,6 +494,61 @@ background-color: rgb(85, 0, 255);
 color: rgb(255, 255, 0);
 selection-color: rgb(0, 0, 255);</string>
            </property>
+           <item>
+            <property name="text">
+             <string/>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Рок</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Поп</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Танцевальная</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Шансон</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Реп, хип-хоп</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Классика</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Детское</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Юмор</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Новости</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Другое</string>
+            </property>
+           </item>
           </widget>
          </item>
         </layout>

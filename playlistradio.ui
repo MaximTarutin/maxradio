@@ -314,6 +314,36 @@ selection-color: rgb(0, 0, 127);</string>
         </widget>
        </item>
        <item>
+        <widget class="QComboBox" name="comboBox_dance">
+         <property name="minimumSize">
+          <size>
+           <width>150</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>150</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: rgba(255, 255, 255, 0);
+selection-color: rgb(0, 0, 127);
+selection-background-color: rgb(85, 255, 255);
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(255, 241, 118, 177), stop:1 rgba(255, 255, 255, 255));</string>
+         </property>
+         <property name="frame">
+          <bool>true</bool>
+         </property>
+         <item>
+          <property name="text">
+           <string>Танцевальная</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item>
         <widget class="QComboBox" name="comboBox_shanson">
          <property name="minimumSize">
           <size>
@@ -489,36 +519,6 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgb
          <item>
           <property name="text">
            <string>Новости</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item>
-        <widget class="QComboBox" name="comboBox_dance">
-         <property name="minimumSize">
-          <size>
-           <width>150</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>150</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">background-color: rgba(255, 255, 255, 0);
-selection-color: rgb(0, 0, 127);
-selection-background-color: rgb(85, 255, 255);
-background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(255, 241, 118, 177), stop:1 rgba(255, 255, 255, 255));</string>
-         </property>
-         <property name="frame">
-          <bool>true</bool>
-         </property>
-         <item>
-          <property name="text">
-           <string>Танцевальная</string>
           </property>
          </item>
         </widget>

@@ -75,6 +75,33 @@ void PlaylistRadio::init()
     QSqlQuery query;
     QString name, groups;
 
+    ui->comboBox_classic->clear();
+    ui->comboBox_classic->addItem("Классика");
+    ui->comboBox_dance->clear();
+    ui->comboBox_dance->addItem("Танцевальная");
+    ui->comboBox_hiphop->clear();
+    ui->comboBox_hiphop->addItem("Реп, хип-хоп");
+    ui->comboBox_humor->clear();
+    ui->comboBox_humor->addItem("Юмор");
+    ui->comboBox_kind->clear();
+    ui->comboBox_kind->addItem("Детское");
+    ui->comboBox_news->clear();
+    ui->comboBox_news->addItem("Новости");
+    ui->comboBox_other->clear();
+    ui->comboBox_other->addItem("Другое");
+    ui->comboBox_pop->clear();
+    ui->comboBox_pop->addItem("Поп");
+    ui->comboBox_rok->clear();
+    ui->comboBox_rok->addItem("Рок");
+    ui->comboBox_shanson->clear();
+    ui->comboBox_shanson->addItem("Шансон");
+
+    if(mplayer->isPlaying()==false)             // очищаем название радио и трека
+    {
+        ui->radio_label->setText("");
+        runstring->setText("");
+    }
+
     query.exec("SELECT groups, name FROM maxradio_table;");
     while (query.next())
     {
@@ -157,7 +184,6 @@ void PlaylistRadio::play_radio(QString radio)
     query.next();
     url = query.value("url").toString();
     mplayer->setSource(QUrl(url));
-    qDebug() << url;
     query.clear();
     FLAG_FIRST_START = false;
     play_button();
@@ -205,7 +231,6 @@ void PlaylistRadio::track_name()
 {
     track=mplayer->metaData().value(QMediaMetaData::Title).toString();
     runstring->setText(track);
-    //qDebug() << track;
 }
 
 // ----------------------- Слот статуса потока ----------------------------------
@@ -216,6 +241,5 @@ void PlaylistRadio::onMediaStatusChanged(QMediaPlayer::MediaStatus status)
     {
         track=mplayer->metaData().value(QMediaMetaData::Title).toString();
         runstring->setText(track);
-        qDebug() << status;
     }
 }

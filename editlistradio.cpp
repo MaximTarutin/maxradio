@@ -16,7 +16,8 @@ EditlistRadio::EditlistRadio(QWidget *parent) :
 
     background->resize(this->width(), this->height());
     background->lower();
-    background->setStyleSheet("background-color: rgba(255, 255, 255, 100); border-image: url(:/res/vborder.png); ");
+    background->setStyleSheet("background-color: rgba(255, 255, 255, 0); border-image: url(:/res/vborder.png); ");
+
     this->setWindowFlag(Qt::FramelessWindowHint);
     this->setAttribute(Qt::WA_TranslucentBackground);                       // делаем окно прозрачным
 

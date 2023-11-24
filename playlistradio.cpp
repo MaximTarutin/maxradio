@@ -1,3 +1,13 @@
+/* --------------------------------------------------- *
+ *                                                     *
+ *      Для корректного чтения тегов из url            *
+ *      в среду сборки добавить переменную:            *
+ *      QT_MEDIA_BACKEND со значением gstreamer        *
+ *      (по умолчанию используется значение ffmpeg)    *
+ *                                                     *
+ *---------------------------------------------------- */
+
+
 #include "playlistradio.h"
 #include "ui_playlistradio.h"
 #include <QSqlQuery>
@@ -8,7 +18,7 @@ PlaylistRadio::PlaylistRadio(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::PlaylistRadio)
 {
-    FLAG_FIRST_START = true;                                // еще ничего не воспроизводилось,
+    FLAG_FIRST_START = true;                                // еще ничего не воспроизвBASSодилось,
                                                             // программу только запустили
 
     ui->setupUi(this);
@@ -52,7 +62,8 @@ PlaylistRadio::PlaylistRadio(QWidget *parent) :
     connect(this->ui->Button_play,      &QPushButton::clicked,  this,   &PlaylistRadio::play_button);       // Нажали кнопку play
     connect(this->ui->Button_stop,      &QPushButton::clicked,  this,   &PlaylistRadio::stop_button);       // Нажали кнопку stop
 
-    connect(mplayer, SIGNAL(mediaStatusChanged(QMediaPlayer::MediaStatus)), this, SLOT(onMediaStatusChanged(QMediaPlayer::MediaStatus)));
+    //connect(mplayer, SIGNAL(mediaStatusChanged(QMediaPlayer::MediaStatus)), this, SLOT(onMediaStatusChanged(QMediaPlayer::MediaStatus)));
+    //connect(mplayer, SIGNAL(positionChanged()), this, SLOT(onMediaStatusChanged(QMediaPlayer::MediaStatus)));
 
     connect(this->timer,    &QTimer::timeout,       this,   &PlaylistRadio::run_string);
     connect(mplayer, &QMediaPlayer::positionChanged, this,  &PlaylistRadio::track_name);
@@ -183,6 +194,7 @@ void PlaylistRadio::play_radio(QString radio)
     query.exec("SELECT url FROM maxradio_table WHERE name = '"+name+"'");
     query.next();
     url = query.value("url").toString();
+
     mplayer->setSource(QUrl(url));
     query.clear();
     FLAG_FIRST_START = false;
@@ -231,15 +243,4 @@ void PlaylistRadio::track_name()
 {
     track=mplayer->metaData().value(QMediaMetaData::Title).toString();
     runstring->setText(track);
-}
-
-// ----------------------- Слот статуса потока ----------------------------------
-
-void PlaylistRadio::onMediaStatusChanged(QMediaPlayer::MediaStatus status)
-{
-    if (status == QMediaPlayer::LoadedMedia)
-    {
-        track=mplayer->metaData().value(QMediaMetaData::Title).toString();
-        runstring->setText(track);
-    }
 }

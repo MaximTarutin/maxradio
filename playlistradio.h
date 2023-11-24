@@ -26,6 +26,7 @@ private:
     QAudioOutput        *audioOutput;
     QLabel              *background;        // фоновая картинка плейлиста
     QTimer              *timer;             // таймер для бегущей строки
+    QTimer              *timer1;
     QVariant            vr;
     QString             url;
     QString             track;
@@ -40,7 +41,6 @@ private slots:
     void stop_button();                                                 // остановка радиопотока по кнопке
     void run_string();                                                  // бегущая строка с названием трека
     void track_name();                                                  // считываем название трека из потока
-    void onMediaStatusChanged(QMediaPlayer::MediaStatus status);        // статус потока
 
 public:
     void init();                        // инициализация плейлиста

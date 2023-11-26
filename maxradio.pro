@@ -31,23 +31,3 @@ RESOURCES += \
 FORMS += \
     editlistradio.ui \
     playlistradio.ui
-
-
-
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/./release/ -lbass
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/./debug/ -lbass
-else:unix:!macx: LIBS += -L$$PWD/./ -lbass
-
-INCLUDEPATH += $$PWD/.
-DEPENDPATH += $$PWD/.
-
-unix:!macx: LIBS += -L$$PWD/../../../Qt/6.5.3/gcc_64/plugins/multimedia/ -lgstreamermediaplugin
-
-INCLUDEPATH += $$PWD/../../../Qt/6.5.3/gcc_64/plugins/multimedia
-DEPENDPATH += $$PWD/../../../Qt/6.5.3/gcc_64/plugins/multimedia
-
-
-unix:!macx: LIBS += -L$$PWD/../../../Qt/6.5.3/gcc_64/plugins/multimedia/ -lffmpegmediaplugin
-
-INCLUDEPATH += $$PWD/../../../Qt/6.5.3/gcc_64/plugins/multimedia
-DEPENDPATH += $$PWD/../../../Qt/6.5.3/gcc_64/plugins/multimedia

@@ -4,6 +4,7 @@
 #include <QProcess>
 #include <QTcpSocket>
 #include <QUrl>
+#include <QSqlQuery>
 
 EditlistRadio::EditlistRadio(QWidget *parent) :
     QWidget(parent),
@@ -134,7 +135,9 @@ void EditlistRadio::del_radio()
 
 void EditlistRadio::add_radio()
 {
-    QString     group, name, url;
+    QString     group, name, url, db_url;
+    QSqlQuery   query;
+
     group = ui->Category_comboBox->currentText();
     name  = ui->add_url_lineEdit_2->text();
     url   = ui->add_url_lineEdit->text();
@@ -168,6 +171,27 @@ void EditlistRadio::add_radio()
         message->setIcon(QMessageBox::Warning);
         message->show();
         return;
+    }
+
+
+    /* Проверяем нет ли такого URL в базе данных */
+
+    query.exec("SELECT url FROM maxradio_table");
+    while (query.next())
+    {
+        db_url = query.value("url").toString();
+        if (url == db_url)
+        {
+            message->setStyleSheet("background-color: pink; color: black; "
+                                   "font: 700 italic 14pt 'Times New Roman';");
+            message->setText("<center><font color = 'red'> Внимание !!! </center>");
+            message->setInformativeText("<center>Такой URL уже есть в базе данных !!! "
+                                        "Радиостанция не будет добавлена в плейлист !!!'</center>");
+            message->setIcon(QMessageBox::Critical);
+            message->show();
+            ui->add_url_lineEdit->clear();
+            return;
+        }
     }
 
     check_url_window(url);
@@ -213,6 +237,13 @@ void EditlistRadio::check_url_window(QString url)
 
 void EditlistRadio::check_position()
 {
+    QString     group, name, url;
+    QSqlQuery   query;
+
+    group = ui->Category_comboBox->currentText();
+    name  = ui->add_url_lineEdit_2->text();
+    url   = ui->add_url_lineEdit->text();
+
     message->setStyleSheet("background-color: lightgreen; color: black; "
                            "font: 700 italic 14pt 'Times New Roman';");
     message->setText("<center><font color = 'red'>Проверка существования потока...</center>");
@@ -220,10 +251,17 @@ void EditlistRadio::check_position()
     message->setIcon(QMessageBox::Information);
     message->setStandardButtons(QMessageBox::Ok);
     message->show();
+
     num = 20;
     timer_check_url->stop();
     disconnect(check_player,  &QMediaPlayer::positionChanged,  this,  &EditlistRadio::check_position);
     disconnect(timer_check_url, &QTimer::timeout, this, &EditlistRadio::timer_changed);
+
+
+
+    /* Добавляем радиостанцию в базу данных */
+
+    query.exec("INSERT INTO maxradio_table (groups, name, url) VALUES ('"+group+"','"+name+"','"+url+"')");
 }
 
 // --------- Если вышло время и позиция не изменилась, то потока не существует -------------------

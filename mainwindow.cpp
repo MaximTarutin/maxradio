@@ -75,7 +75,7 @@ void MainWindow::init_playlist()
         count++;
     }
 
-    if(count == 0)
+    if(count == 0) // https://ic1.radiosignal.one/deep-mp3 Новый год
     {
         query.exec("CREATE TABLE maxradio_table ("
                    "groups STRING, name STRING, url STRING, UNIQUE(url));");

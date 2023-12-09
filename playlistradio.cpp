@@ -62,11 +62,8 @@ PlaylistRadio::PlaylistRadio(QWidget *parent) :
     connect(this->ui->Button_play,      &QPushButton::clicked,  this,   &PlaylistRadio::play_button);       // Нажали кнопку play
     connect(this->ui->Button_stop,      &QPushButton::clicked,  this,   &PlaylistRadio::stop_button);       // Нажали кнопку stop
 
-    //connect(mplayer, SIGNAL(mediaStatusChanged(QMediaPlayer::MediaStatus)), this, SLOT(onMediaStatusChanged(QMediaPlayer::MediaStatus)));
-    //connect(mplayer, SIGNAL(positionChanged()), this, SLOT(onMediaStatusChanged(QMediaPlayer::MediaStatus)));
-
-    connect(this->timer,    &QTimer::timeout,       this,   &PlaylistRadio::run_string);
-    connect(mplayer, &QMediaPlayer::positionChanged, this,  &PlaylistRadio::track_name);
+    connect(this->timer,    &QTimer::timeout,       this,   &PlaylistRadio::run_string);                    // бегущая строка
+    connect(mplayer, &QMediaPlayer::positionChanged, this,  &PlaylistRadio::track_name);                    // считываем название песни
 }
 
 PlaylistRadio::~PlaylistRadio()

@@ -1,6 +1,9 @@
 #include "editlistradio.h"
 #include "ui_editlistradio.h"
 #include <QSqlQuery>
+#include <QProcess>
+#include <QTcpSocket>
+#include <QUrl>
 
 EditlistRadio::EditlistRadio(QWidget *parent) :
     QWidget(parent),
@@ -9,8 +12,14 @@ EditlistRadio::EditlistRadio(QWidget *parent) :
     ui->setupUi(this);
     this->hide();
 
-    background = new QLabel(this);
-    message    = new QMessageBox(this);
+    background      = new QLabel(this);
+    message         = new QMessageBox(this);
+    check_player    = new QMediaPlayer(this);
+    audiooutput     = new QAudioOutput(this);
+    timer_check_url = new QTimer(this);
+
+    check_player->setAudioOutput(audiooutput);
+    audiooutput->setVolume(0);
 
     message->setWindowFlag(Qt::FramelessWindowHint);
 
@@ -24,6 +33,7 @@ EditlistRadio::EditlistRadio(QWidget *parent) :
     connect(ui->return_pushButton, &QPushButton::clicked,           this,   &EditlistRadio::return_mainwindow);     // Кнопка назад
     connect(ui->Category_comboBox, &QComboBox::currentIndexChanged, this,   &EditlistRadio::update_del_combobox);   // изменяем группу
     connect(ui->del_pushButton,    &QPushButton::clicked,           this,   &EditlistRadio::del_radio);             // удаляем радиостанцию
+    connect(ui->add_pushButton,    &QPushButton::clicked,           this,   &EditlistRadio::add_radio);             // добавляем радиостанцию
 }
 
 EditlistRadio::~EditlistRadio()
@@ -31,14 +41,20 @@ EditlistRadio::~EditlistRadio()
     delete ui;
     delete background;
     delete message;
+    delete check_player;
 }
 
 // ----------------------------- Возврат из редактора -----------------------------------
 
 void EditlistRadio::return_mainwindow()
 {
-    emit editor_actived(false);         // посылаем сигнал, что редактор больше не активный
-    this->close();
+    emit editor_actived(false);             // посылаем сигнал, что редактор больше не активный
+    timer_check_url->stop();
+
+    disconnect(check_player,  &QMediaPlayer::positionChanged,  this,  &EditlistRadio::check_position);
+    disconnect(timer_check_url, &QTimer::timeout, this, &EditlistRadio::timer_changed);
+
+    this->close();                          // для обновления плейлиста в playlistradio.cpp
 }
 
 // ------------------------------ Обновить combobox радиостанций для удаления ------------------
@@ -112,8 +128,118 @@ void EditlistRadio::del_radio()
         update_del_combobox();
         emit change_playlist(true);
     }
+}
 
+// ----------------------------------- Добавить радиостанцию -----------------------------------
 
+void EditlistRadio::add_radio()
+{
+    QString     group, name, url;
+    group = ui->Category_comboBox->currentText();
+    name  = ui->add_url_lineEdit_2->text();
+    url   = ui->add_url_lineEdit->text();
+
+    if(group == "")
+    {
+        message->setStyleSheet("background-color: pink; color: black; "
+                             "font: 700 italic 14pt 'Times New Roman';");
+        message->setText("<center><font color = 'red'> Ошибка !!! </center>");
+        message->setInformativeText("<center>Не выбранна группа куда добавить url ...</center>");
+        message->setIcon(QMessageBox::Warning);
+        message->show();
+        return;
+    }
+    if(name == "")
+    {
+        message->setStyleSheet("background-color: pink; color: black; "
+                               "font: 700 italic 14pt 'Times New Roman';");
+        message->setText("<center><font color = 'red'> Ошибка !!! </center>");
+        message->setInformativeText("<center>Не заполнено поле 'Название' ...</center>");
+        message->setIcon(QMessageBox::Warning);
+        message->show();
+        return;
+    }
+    if(url == "")
+    {
+        message->setStyleSheet("background-color: pink; color: black; "
+                               "font: 700 italic 14pt 'Times New Roman';");
+        message->setText("<center><font color = 'red'> Ошибка !!! </center>");
+        message->setInformativeText("<center>Не заполнено поле 'URL радио' ...</center>");
+        message->setIcon(QMessageBox::Warning);
+        message->show();
+        return;
+    }
+
+    check_url_window(url);
+}
+
+// ------------------------------ Проверяем рабочий ли URL -----------------------------------
+
+void EditlistRadio::check_url_window(QString url)
+{
+    check_player->setSource(QUrl(url));
+    check_player->play();
+    num = 20;                               // количество секунд для обратного отсчета времени
+    timer_check_url->start(1000);           // запускаем таймер проверки url
+
+    connect(check_player,  &QMediaPlayer::positionChanged,  this,  &EditlistRadio::check_position);
+    connect(timer_check_url, &QTimer::timeout, this, &EditlistRadio::timer_changed);
+
+// *********** Всплывающее окно с обратным отсчетом времени **************
+
+    message->setStyleSheet("background-color: cyan; color: black; "
+                           "font: 700 italic 14pt 'Times New Roman';");
+    message->setText("<center><font color = 'red'>Проверка существования потока...</center>");
+    message->setInformativeText("<center> Время проверки:  "+QString::number(num)+" сек.");
+    message->setIcon(QMessageBox::Information);
+    message->setStandardButtons(QMessageBox::Cancel);
+    message->show();
+
+    int ret = message->exec();
+
+    switch (ret)
+    {
+    case QMessageBox::Cancel:   timer_check_url->stop();                // кнопка отмена
+        disconnect(check_player,  &QMediaPlayer::positionChanged,
+                   this,  &EditlistRadio::check_position);
+        disconnect(timer_check_url, &QTimer::timeout,
+                   this, &EditlistRadio::timer_changed);
+        message->close();
+        break;
+    }
+}
+
+// --------- Если позиция QMediaPlayer изменилась, то поток существует ---------------------------
+
+void EditlistRadio::check_position()
+{
+    message->setStyleSheet("background-color: lightgreen; color: black; "
+                           "font: 700 italic 14pt 'Times New Roman';");
+    message->setText("<center><font color = 'red'>Проверка существования потока...</center>");
+    message->setInformativeText("<center> Данный поток существует, радиостанция добавлена в плейлист !!!");
+    message->setIcon(QMessageBox::Information);
+    message->setStandardButtons(QMessageBox::Ok);
+    message->show();
+    num = 20;
+    timer_check_url->stop();
+    disconnect(check_player,  &QMediaPlayer::positionChanged,  this,  &EditlistRadio::check_position);
+    disconnect(timer_check_url, &QTimer::timeout, this, &EditlistRadio::timer_changed);
+}
+
+// --------- Если вышло время и позиция не изменилась, то потока не существует -------------------
+
+void EditlistRadio::timer_changed()
+{
+    message->setInformativeText("<center> Время проверки:  "+QString::number(num)+" сек.");
+    num--;
+    if(num<0)
+    {
+        num = 20;
+        timer_check_url->stop();
+        disconnect(check_player,  &QMediaPlayer::positionChanged,  this,  &EditlistRadio::check_position);
+        disconnect(timer_check_url, &QTimer::timeout, this, &EditlistRadio::timer_changed);
+        message->close();
+    }
 }
 
 

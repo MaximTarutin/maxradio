@@ -286,9 +286,18 @@ void EditlistRadio::timer_changed()
     {
         num = 20;
         timer_check_url->stop();
+
         disconnect(check_player,  &QMediaPlayer::positionChanged,  this,  &EditlistRadio::check_position);
         disconnect(timer_check_url, &QTimer::timeout, this, &EditlistRadio::timer_changed);
-        message->close();
+
+        message->setStyleSheet("background-color: pink; color: black; "
+                               "font: 700 italic 14pt 'Times New Roman';");
+        message->setText("<center><font color = 'red'> Внимание !!! </center>");
+        message->setInformativeText("<center>Данный URL не воспроизводит потоков !!! "
+                                    "Радиостанция не будет добавлена в плейлист !!!'</center>");
+        message->setIcon(QMessageBox::Critical);
+        message->show();
+        ui->add_url_lineEdit->clear();
     }
 }
 

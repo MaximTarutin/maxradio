@@ -43,6 +43,7 @@ EditlistRadio::~EditlistRadio()
     delete background;
     delete message;
     delete check_player;
+    delete timer_check_url;
 }
 
 // ----------------------------- Возврат из редактора -----------------------------------
@@ -54,6 +55,10 @@ void EditlistRadio::return_mainwindow()
 
     disconnect(check_player,  &QMediaPlayer::positionChanged,  this,  &EditlistRadio::check_position);
     disconnect(timer_check_url, &QTimer::timeout, this, &EditlistRadio::timer_changed);
+
+    ui->Category_comboBox->setCurrentIndex(0);
+    ui->add_url_lineEdit_2->clear();
+    ui->add_url_lineEdit->clear();
 
     this->close();                          // для обновления плейлиста в playlistradio.cpp
 }
@@ -262,6 +267,13 @@ void EditlistRadio::check_position()
     /* Добавляем радиостанцию в базу данных */
 
     query.exec("INSERT INTO maxradio_table (groups, name, url) VALUES ('"+group+"','"+name+"','"+url+"')");
+
+    update_del_combobox();                              // обновляем combobox в editlistradio.cpp
+    emit change_playlist(true);                         // обновляем плейлист
+
+    ui->Category_comboBox->setCurrentIndex(0);          // очищаем поля
+    ui->add_url_lineEdit_2->clear();
+    ui->add_url_lineEdit->clear();
 }
 
 // --------- Если вышло время и позиция не изменилась, то потока не существует -------------------

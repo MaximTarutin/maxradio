@@ -45,9 +45,8 @@ private slots:
     void stop_button();                                                 // остановка радиопотока по кнопке
     void run_string();                                                  // бегущая строка с названием трека
     void track_name();                                                  // считываем название трека из потока
-
-public slots:
     void volume_level(bool v);                                          // регулировка уровня громкости
+    void slider_vol(int p);                                             // регулировка громкости слайдером
 
 protected:
     void wheelEvent(QWheelEvent *event);                                // Колесиком мышки регулирем громкость

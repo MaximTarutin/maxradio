@@ -72,6 +72,7 @@ PlaylistRadio::PlaylistRadio(QWidget *parent) :
     connect(mplayer, &QMediaPlayer::positionChanged, this,  &PlaylistRadio::track_name);                    // считываем название песни
 
     connect(this, &PlaylistRadio::volume, this, &PlaylistRadio::volume_level);                              // уровень громкости
+    connect(this->ui->verticalSlider,   &QSlider::sliderMoved,  this,   &PlaylistRadio::slider_vol);
 }
 
 PlaylistRadio::~PlaylistRadio()
@@ -264,6 +265,15 @@ void PlaylistRadio::wheelEvent(QWheelEvent *event)
     {
         emit volume(false);             // Убавляем громкость
     }
+}
+
+void PlaylistRadio::slider_vol(int p)
+{
+    float p1;
+    p1 = p/10;
+    VOL_LEVEL = p1/10;
+    mplayer->audioOutput()->setVolume(VOL_LEVEL);
+    qDebug() << VOL_LEVEL;
 }
 
 void PlaylistRadio::volume_level(bool v)

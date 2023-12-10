@@ -20,6 +20,7 @@ PlaylistRadio::PlaylistRadio(QWidget *parent) :
 {
     FLAG_FIRST_START = true;                                // еще ничего не воспроизвBASSодилось,
                                                             // программу только запустили
+    VOL_LEVEL=0.5;
 
     ui->setupUi(this);
 
@@ -36,7 +37,8 @@ PlaylistRadio::PlaylistRadio(QWidget *parent) :
     runstring->resize(600, 30);
 
     mplayer->setAudioOutput(audioOutput);
-    audioOutput->setVolume(50);
+    mplayer->audioOutput()->setVolume(VOL_LEVEL);
+
 
     this->setWindowFlag(Qt::FramelessWindowHint);
     this->setWindowFlag(Qt::Popup);
@@ -64,6 +66,8 @@ PlaylistRadio::PlaylistRadio(QWidget *parent) :
 
     connect(this->timer,    &QTimer::timeout,       this,   &PlaylistRadio::run_string);                    // бегущая строка
     connect(mplayer, &QMediaPlayer::positionChanged, this,  &PlaylistRadio::track_name);                    // считываем название песни
+
+    connect(this, &PlaylistRadio::volume, this, &PlaylistRadio::volume_level);                              // уровень громкости
 }
 
 PlaylistRadio::~PlaylistRadio()
@@ -240,4 +244,37 @@ void PlaylistRadio::track_name()
 {
     track=mplayer->metaData().value(QMediaMetaData::Title).toString();
     runstring->setText(track);
+}
+
+// ------------------------- Регулировка громкости посылаем сигнал ----------------
+
+void PlaylistRadio::wheelEvent(QWheelEvent *event)
+{
+    QPoint angle = event->angleDelta()/8;
+    event->accept();
+
+    if(angle.y() > 0)
+    {
+        emit volume(true);              // Добавляем громкость
+    } else
+    {
+        emit volume(false);             // Убавляем громкость
+    }
+}
+
+void PlaylistRadio::volume_level(bool v)
+{
+    if(v == true)
+    {
+        VOL_LEVEL=VOL_LEVEL+0.05;
+        if(VOL_LEVEL >= 1) VOL_LEVEL = 1;
+
+    } else
+    {
+        VOL_LEVEL=VOL_LEVEL-0.05;
+        if(VOL_LEVEL <= 0) VOL_LEVEL = 0;
+    }
+    mplayer->audioOutput()->setVolume(VOL_LEVEL);
+    qDebug() << mplayer->audioOutput()->volume();
+
 }

@@ -218,7 +218,6 @@ void PlaylistRadio::play_button()
         mplayer->play();
         this->ui->Button_play->setStyleSheet("background-color: rgba(255, 255, 255, 0); border-image: url(:/res/play-d.png);");
         this->ui->Button_stop->setStyleSheet("background-color: rgba(255, 255, 255, 0); border-image: url(:/res/stop.png);");
-        emit play_streamer(true);
     }
 }
 
@@ -247,7 +246,9 @@ void PlaylistRadio::run_string()
 
 void PlaylistRadio::track_name()
 {
+    emit play_streamer(true);
     track=mplayer->metaData().value(QMediaMetaData::Title).toString();
+    emit name_play_song(track);
     runstring->setText(track);
 }
 

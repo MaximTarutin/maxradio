@@ -47,6 +47,7 @@ private slots:
     void icon_in_tray(bool b);                                  // меняет иконку в зависимости от того проигрывается ли поток
     void change_flag_editor(bool b);                            // изменяет FLAG_EDITOR на false, при закрытии редактора
     void change_playlist(bool b);                               // изменился плейлист
+    void name_track(QString n);                                 // принимаем название песни
 };
 
 #endif // MAINWINDOW_H

@@ -26,6 +26,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(playlist_radio,     &PlaylistRadio::play_streamer,  this,   &MainWindow::icon_in_tray);         // цвет иконки
     connect(editlist_radio,     &EditlistRadio::editor_actived, this,   &MainWindow::change_flag_editor);   // меняем флаг на false
     connect(editlist_radio,     &EditlistRadio::change_playlist,this,   &MainWindow::change_playlist);
+    connect(playlist_radio,     &PlaylistRadio::name_play_song, this,   &MainWindow::name_track);           // название трека
 }
 
 MainWindow::~MainWindow()
@@ -271,3 +272,9 @@ void MainWindow::change_playlist(bool b)
     }
 }
 
+// ------------------------------ ловим название трека ---------------------------------------
+
+void MainWindow::name_track(QString n)
+{
+    trayIcon->setToolTip(n);
+}

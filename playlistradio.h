@@ -39,6 +39,7 @@ private:
 signals:
     void play_streamer(bool);               // изменяет цвет иконки, в зависимости от того играет поток или нет
     void volume(bool);                      // изменяет громкость: true - громче, false - тише
+    void name_play_song(QString);           // сигнал передает название композиции
 
 private slots:
     void play_button();                                                 // запуск радиопотока по кнопке

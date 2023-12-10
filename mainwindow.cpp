@@ -25,7 +25,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(trayIcon,           &QSystemTrayIcon::activated,    this,   &MainWindow::show_list_radio);      // клик по иконке
     connect(playlist_radio,     &PlaylistRadio::play_streamer,  this,   &MainWindow::icon_in_tray);         // цвет иконки
     connect(editlist_radio,     &EditlistRadio::editor_actived, this,   &MainWindow::change_flag_editor);   // меняем флаг на false
-    connect(editlist_radio,     &EditlistRadio::change_playlist, this,  &MainWindow::change_playlist);
+    connect(editlist_radio,     &EditlistRadio::change_playlist,this,   &MainWindow::change_playlist);
 }
 
 MainWindow::~MainWindow()
@@ -270,3 +270,4 @@ void MainWindow::change_playlist(bool b)
         return;
     }
 }
+

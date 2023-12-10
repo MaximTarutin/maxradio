@@ -50,6 +50,10 @@ PlaylistRadio::PlaylistRadio(QWidget *parent) :
     this->ui->Button_stop->setStyleSheet("background-color: rgba(255, 255, 255, 0); "
                                          "border-image: url(:/res/stop-d.png);");
 
+    this->ui->verticalSlider->setMaximum(100);
+    this->ui->verticalSlider->setMinimum(0);
+    this->ui->verticalSlider->setSliderPosition(VOL_LEVEL*100);
+
     connect(this->ui->comboBox_rok,     &QComboBox::currentTextChanged, this,   [this](){play_radio("rok");});      // Выбираем категорию радио
     connect(this->ui->comboBox_pop,     &QComboBox::currentTextChanged, this,   [this](){play_radio("pop");});
     connect(this->ui->comboBox_shanson, &QComboBox::currentTextChanged, this,   [this](){play_radio("shanson");});
@@ -274,6 +278,8 @@ void PlaylistRadio::volume_level(bool v)
         VOL_LEVEL=VOL_LEVEL-0.05;
         if(VOL_LEVEL <= 0) VOL_LEVEL = 0;
     }
+
+    this->ui->verticalSlider->setSliderPosition(VOL_LEVEL*100);
     mplayer->audioOutput()->setVolume(VOL_LEVEL);
     qDebug() << mplayer->audioOutput()->volume();
 
